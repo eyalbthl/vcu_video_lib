@@ -75,6 +75,8 @@ const char *vlib_error_name(vlib_error error_code)
 		return "VLIB HDMI-RX Src is not Available";
 	case VLIB_ERROR_TPG_1_NOT_AVAILABLE:
 		return "VLIB TPG 1 Src is not Available";
+	case VLIB_ERROR_TPG_2_NOT_AVAILABLE:
+		return "VLIB TPG 2 Src is not Available";
 	case VLIB_ERROR_SDI_NOT_AVAILABLE:
 		return "VLIB SDI Src is not Available";
 	case VLIB_ERROR_SCD_NOT_AVAILABLE:

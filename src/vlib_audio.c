@@ -68,7 +68,9 @@ char* vlib_audio_find_device_id(snd_pcm_stream_t stream_direction, unsigned int 
 
     card = -1;
     while ((snd_card_next(&card) >= 0) && (card >=0)) {
-        sprintf(name, "hw:%d", card);
+    	// ODELYA - forced to cast card type to avoid warnings as errors. assuming card range is between  [−127, +127].
+    	// => no more then 127 audio card. snd_card_next iterate over physical sound cards.
+        sprintf(name, "hw:%d", (signed char)card);
         if ((err = snd_ctl_open(&handle, name, 0)) < 0) {
             vlib_err("control open (%i): %s", card, snd_strerror(err));
             continue;

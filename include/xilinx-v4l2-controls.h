@@ -24,11 +24,12 @@
  *
  ********************************************************************/
 
+//ODELYA - check why the change from #ifndef __UAPI_XILINX_V4L2_CONTROLS_H__
+// & #include <linux/v4l2-controls.h>
+#ifndef __UAPI_XILINX_V4L2_LCL_CONTROLS_H__ /*__UAPI_XILINX_V4L2_CONTROLS_H__*/
+#define __UAPI_XILINX_V4L2_LCL_CONTROLS_H__ /*__UAPI_XILINX_V4L2_CONTROLS_H__*/
 
-#ifndef __UAPI_XILINX_V4L2_CONTROLS_H__
-#define __UAPI_XILINX_V4L2_CONTROLS_H__
-
-#include <linux/v4l2-controls.h>
+#include <linux/xilinx-v4l2-controls.h> /*<linux/v4l2-controls.h>*/
 
 #define V4L2_CID_XILINX_OFFSET	0xc000
 #define V4L2_CID_XILINX_BASE	(V4L2_CID_USER_BASE + V4L2_CID_XILINX_OFFSET)
@@ -79,6 +80,8 @@
 #define V4L2_CID_XILINX_TPG_NOISE_GAIN		(V4L2_CID_XILINX_TPG + 17)
 /* Foreground pattern (HLS)*/
 #define V4L2_CID_XILINX_TPG_HLS_FG_PATTERN     (V4L2_CID_XILINX_TPG + 18)
+/* pixels per clock */
+#define V4L2_CID_XILINX_PPC			(V4L2_CID_XILINX_TPG + 19)
 
 /*
  * Xilinx CRESAMPLE Video IP
@@ -166,4 +169,4 @@
 /* Adjust Green Gamma */
 #define V4L2_CID_XILINX_GAMMA_CORR_GREEN_GAMMA	(V4L2_CID_XILINX_GAMMA_CORR + 3)
 
-#endif /* __UAPI_XILINX_V4L2_CONTROLS_H__ */
+#endif /* __UAPI_XILINX_V4L2_LCL_CONTROLS_H__ */ /* __UAPI_XILINX_V4L2_CONTROLS_H__ */

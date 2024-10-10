@@ -73,7 +73,10 @@ static void vlib_vsrc_table_free_func(void *e)
 
 static const struct matchtable mt_entities[] = {
 		{
-				.s = "vcap_tpg_input_v_tpg_1 output 0", .init = vcap_tpg_init,
+				.s = "v_tpg_", .init = vcap_tpg_init,
+		},
+		{
+				.s = "v_tpg_", .init = vcap_tpg_init,
 		},
 		{
 				.s = "vcapaxis_broad_out1hdmi_input_a", .init = vcap_hdmi_init,
@@ -112,7 +115,7 @@ static struct vlib_vdev *init_xvideo(const struct matchtable *mte, void *media)
 	struct vlib_vdev *vd = NULL;
 	size_t nents = media_get_entities_count(media);
 
-	for (size_t i = 0; i < nents; i++) {
+	for (size_t i = 0; i < nents && !vd; i++) {
 		const struct media_entity_desc *info;
 		struct media_entity *entity = media_get_entity(media, i);
 
@@ -123,7 +126,7 @@ static struct vlib_vdev *init_xvideo(const struct matchtable *mte, void *media)
 
 		info = media_entity_get_info(entity);
 		for (size_t j = 0; j < ARRAY_SIZE(mt_entities); j++) {
-			if (!strcmp(mt_entities[j].s, info->name)) {
+			if (strstr(info->name, mt_entities[j].s)) {
 				vd = mt_entities[j].init(&mt_entities[j], media);
 				break;
 			}
@@ -208,11 +211,11 @@ int vlib_src_init()
 
 	ret = glob("/dev/media*", 0, NULL, &pglob);
 	if (ret != VLIB_SUCCESS){
-                if (ret == GLOB_NOMATCH) {
-                        ret = VLIB_NO_MEDIA_SRC; /* FIX ME */
-                } else
-                        ret = VLIB_ERROR_INIT; /* FIX ME */
-                goto error;
+		if (ret == GLOB_NOMATCH) {
+				ret = VLIB_NO_MEDIA_SRC; /* FIX ME */
+		} else
+				ret = VLIB_ERROR_INIT; /* FIX ME */
+		goto error;
         }
 
 	for (size_t i = 0; i < pglob.gl_pathc; i++) {
@@ -265,7 +268,6 @@ int vlib_src_init()
 	/* First check if we found any media node specific to SCD */
 	vd = (struct vlib_vdev *)video_get_vdev(SCD);
 	if (NULL != vd) {
-
 		/* Loop through all media nodes found and update SCD flag */
 		for (size_t i = 0; i < video_srcs->len; i++) {
 
@@ -345,11 +347,9 @@ int  vlib_src_uninit(void)
 int vlib_src_reset_config()
 {
 	struct vlib_vdev *vd;
-
 	for (size_t i = 0; i < video_srcs->len; i++) {
 
 		vd = g_ptr_array_index(video_srcs, i);
-
 		if (!vd || (VSRC_TYPE_MEDIA != vd->vsrc_type))
 			continue;
 
@@ -408,12 +408,31 @@ int vlib_src_config(vlib_dev_type dev, struct vlib_config_data *cfg)
 		}
 
 		ret = vcap_tpg_set_media_ctrl(vdev, cfg);
+#if TRD
 		gpio_export(458);
 		gpio_dir_out(458);
 		if (cfg->width_in == 3840 && cfg->height_in == 2160)
 			gpio_value(458,0);
 		else if  (cfg->width_in == 1920 && cfg->height_in  == 1080)
 			gpio_value(458,1);
+#endif
+		break;
+
+	case TPG_2:
+		if (!vdev) {
+			ret = VLIB_ERROR_TPG_2_NOT_AVAILABLE;
+			break;
+		}
+
+		ret = vcap_tpg_set_media_ctrl(vdev, cfg);
+#if TRD
+		gpio_export(458);
+		gpio_dir_out(458);
+		if (cfg->width_in == 3840 && cfg->height_in == 2160)
+			gpio_value(458,0);
+		else if  (cfg->width_in == 1920 && cfg->height_in  == 1080)
+			gpio_value(458,1);
+#endif
 		break;
 
 	case CSI ... CSI_4:

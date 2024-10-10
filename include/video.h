@@ -31,20 +31,21 @@ extern "C"
 #include <stdint.h>
 
 typedef enum {
-    TPG_1 = 0x1,
-    HDMI_1 = 0x2,
-    HDMI_2 = 0x4,
-    HDMI_3 = 0x8,
-    HDMI_4 = 0x10,
-    HDMI_5 = 0x20,
-    HDMI_6 = 0x40,
-    HDMI_7 = 0x80,
-    CSI = 0x100,
-    CSI_2 = 0x200,
-    CSI_3 = 0x400,
-    CSI_4 = 0x800,
-    SDI = 0x1000,
-    SCD = 0x2000,
+	TPG_1	= 0x1,
+	TPG_2	= 0x2,
+	HDMI_1	= 0x4,
+	HDMI_2	= 0x8,
+	HDMI_3	= 0x10,
+	HDMI_4	= 0x20,
+	HDMI_5	= 0x40,
+	HDMI_6	= 0x80,
+	HDMI_7	= 0x100,
+	CSI	= 0x200,
+	CSI_2	= 0x400,
+	CSI_3	= 0x800,
+	CSI_4	= 0x1000,
+	SDI		= 0x2000,
+	SCD		= 0x4000,
 } vlib_dev_type;
 
 typedef enum {
@@ -107,6 +108,7 @@ typedef enum {
 	VLIB_ERROR_DRM_MODE_GET_PLANE_RES_FAIL = -71,
 	VLIB_ERROR_DRM_PLANE_NOT_FOUND = -72,
 	VLIB_ERROR_INVALID_DRM_DEVICE = -73,
+	VLIB_ERROR_TPG_2_NOT_AVAILABLE = -74,
 	VLIB_ERROR_OTHER = -99,
 } vlib_error;
 

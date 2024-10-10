@@ -33,6 +33,7 @@ void tpg_set_blanking(const struct vlib_vdev *vd, unsigned int vblank,
 		      unsigned int hblank);
 void tpg_set_bg_pattern(const struct vlib_vdev *vd, unsigned int bg);
 void tpg_set_fg_pattern(const struct vlib_vdev *vd, unsigned int fg);
+void tpg_set_ppc(const struct vlib_vdev *vd, unsigned int ppc);
 
 #ifdef __cplusplus
 }
